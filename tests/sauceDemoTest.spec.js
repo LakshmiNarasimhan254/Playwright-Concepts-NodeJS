@@ -1,6 +1,24 @@
 import { test, expect} from '@playwright/test';
 
-test('sauceDemoTest-Desktop', async ({page}) => {
+let context
+let page
+
+test.beforeAll(async({browser})=>
+{
+context =await browser.newContext()
+await context.tracing.start(
+  {
+    screenshots: true,
+    snapshots: true
+  });
+page = await context.newPage()  
+})
+
+test.afterAll(async()=>{
+  await context.tracing.stop({path: 'test-trace.zip'});
+})
+
+test('sauceDemoTest-Desktop', async ({}) => {
   await page.goto('https://www.saucedemo.com/');
   await page.locator('[data-test="username"]').click();
   await page.locator('[data-test="username"]').fill('standard_user');
@@ -10,8 +28,8 @@ test('sauceDemoTest-Desktop', async ({page}) => {
   await expect(page).toHaveTitle('Swag Labs');
 })
 
-test('sauceDemoTest-Mobile', async ({page}) => {
-   await page.goto('https://www.saucedemo.com/');
+test('sauceDemoTest-Mobile', async ({}) => {
+  await page.goto('https://www.saucedemo.com/');
   await page.locator('[data-test="username"]').click();
   await page.locator('[data-test="username"]').fill('standard_user');
   await page.locator('[data-test="password"]').click();
@@ -19,5 +37,18 @@ test('sauceDemoTest-Mobile', async ({page}) => {
   await page.locator('[data-test="login-button"]').click();
   await page.getByRole('button', { name: 'Open Menu' }).click();
   await page.getByRole('link', { name: 'Logout' }).click();
-  await browser.close;
+
 })
+
+test('programmaticTrace', async ({}) => {
+  await page.goto('https://www.saucedemo.com/');
+  await page.locator('[data-test="username"]').click();
+  await page.locator('[data-test="username"]').fill('standard_user');
+  await page.locator('[data-test="password"]').click();
+  await page.locator('[data-test="password"]').fill('secret_sauce');
+  await page.locator('[data-test="login-button"]').click();
+  await page.getByRole('button', { name: 'Open Menu' }).click();
+  await page.getByRole('link', { name: 'Logout' }).click();
+  
+})
+
