@@ -19,7 +19,8 @@ test('orangeHRM_login_test',async({page})=>{
    // page.pause();
 });
 
-test('demoPcommerce_login_test',async({page})=>{   
+test('demoPcommerce_login_test',async({page})=>{
+   
   await page.goto('https://admin-demo.nopcommerce.com/login?ReturnUrl=%2Fadmin%2F');
   await page.getByLabel('Email:').click();
   await page.getByLabel('Email:').press('Control+a');

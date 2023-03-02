@@ -24,8 +24,7 @@ test('Selector demo', async({page}) =>
     // await page.locator('input:has-text("GIN")').click();
     
 
-    //combining 2 locators
-    await page.getByRole('submit',':has-text("GIN")').click();
+    
 
 
     
